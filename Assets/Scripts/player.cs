@@ -29,7 +29,6 @@ public class player : MonoBehaviour
                 targetPosition = touchPosition;
                 isMoving = true;
 
-                Debug.Log("Posición del touchh: " + touchPosition);
             }
         }
     }

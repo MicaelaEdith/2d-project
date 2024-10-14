@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private Vector2 targetPosition;
     private bool isMoving = false;
     public int selectedObject { get; private set; }
+    
 
     void Start()
     {

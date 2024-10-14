@@ -28,7 +28,8 @@ public class Door : MonoBehaviour
     private void OpenDoor()
     {
         open = true;
-        //GetComponent<Collider2D>().enabled = false;
         UIManager.instance.DestroyItem(doorKey-1);
+        Destroy(gameObject);
+        
     }
 }

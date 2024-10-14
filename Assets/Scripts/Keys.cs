@@ -11,7 +11,7 @@ public class Keys : MonoBehaviour
             if (other.tag == "Player")
             {
                 Destroy(gameObject);
-            UIManager.instance.ShowItem(num-1);
+                UIManager.instance.ShowItem(num-1);
 
             }
         }

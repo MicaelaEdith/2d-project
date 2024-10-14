@@ -12,6 +12,7 @@ public class Keys : MonoBehaviour
             {
                 Destroy(gameObject);
             UIManager.instance.ShowItem(num-1);
+
             }
         }
  

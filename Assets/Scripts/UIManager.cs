@@ -8,8 +8,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> gridItems;
-
-
+    private List<GameObject> visibleItems = new List<GameObject>();
     public static UIManager instance;
 
     private void Awake()
@@ -19,7 +18,24 @@ public class UIManager : MonoBehaviour
 
     public void ShowItem(int itemIndex)
     {
-        gridItems[itemIndex].SetActive(true);
+        if (itemIndex < gridItems.Count)
+        {
+            gridItems[itemIndex].SetActive(true);
+            visibleItems.Add(gridItems[itemIndex]);
+        }
+    }
+    public void DestroyItem(int itemIndex)
+    {
+        if (itemIndex < gridItems.Count)
+        {
+            gridItems[itemIndex].SetActive(false);
+            visibleItems.Remove(gridItems[itemIndex]);
+        }
+    }
+
+    public List<GameObject> GetVisibleItems()
+    {
+        return visibleItems;
     }
 
     private void Start()

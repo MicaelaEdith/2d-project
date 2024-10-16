@@ -32,13 +32,11 @@ public class Rat : MonoBehaviour
         {
             if (movingToPointB)
             {
-                Debug.Log("puntoB");
                 targetPosition = pointA.position;
                 movingToPointB = false;
             }
             else
             {
-                Debug.Log("puntoA");
                 targetPosition = pointB.position;
                 movingToPointB = true;
             }

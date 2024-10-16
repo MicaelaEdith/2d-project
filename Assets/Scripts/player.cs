@@ -6,17 +6,22 @@ using UnityEngine.EventSystems;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float speed = 3f;
+    private float speed = 5f;
 
     private Rigidbody2D playerRB;
     private Vector2 targetPosition;
     private bool isMoving = false;
     public int selectedObject { get; private set; }
-    
+    private SpriteRenderer spriteRenderer;
+
+    private Animator animator;
 
     void Start()
     {
         playerRB = GetComponent<Rigidbody2D>();
+        playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -29,9 +34,7 @@ public class Player : MonoBehaviour
             {
                 if (touch.phase == TouchPhase.Began || touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                 {
-                    
                     Vector2 touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-
                     targetPosition = touchPosition;
                     isMoving = true;
                 }
@@ -41,6 +44,9 @@ public class Player : MonoBehaviour
                 SelectObjectFromUI(touch.position);
             }
         }
+
+        animator.SetBool("isRunning", isMoving);
+        Flip();
     }
 
     void FixedUpdate()
@@ -72,6 +78,18 @@ public class Player : MonoBehaviour
                 Debug.Log("seleccionado: " + selectedObject);
                 break;
             }
+        }
+    }
+
+    private void Flip()
+    {
+        if (transform.position.x < targetPosition.x)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (transform.position.x > targetPosition.x)
+        {
+            spriteRenderer.flipX = true;
         }
     }
 }

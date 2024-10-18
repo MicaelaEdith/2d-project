@@ -7,14 +7,16 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float speed = 5f;
-
     private Rigidbody2D playerRB;
     private Vector2 targetPosition;
     private bool isMoving = false;
     public int selectedObject { get; private set; }
     private SpriteRenderer spriteRenderer;
-
     private Animator animator;
+    [SerializeField]
+    private LayerMask structure;
+    private int lastSelectedObject = -1;
+
 
     void Start()
     {
@@ -22,7 +24,8 @@ public class Player : MonoBehaviour
         playerRB.constraints = RigidbodyConstraints2D.FreezeRotation;
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-    }
+}
+
 
     void Update()
     {
@@ -44,6 +47,20 @@ public class Player : MonoBehaviour
                 SelectObjectFromUI(touch.position);
             }
         }
+
+        /*RaycastHit2D rcStructureL = Physics2D.Raycast(transform.position + new Vector3(-1, 0.5f), Vector2.up, 0.5f, structure);
+        RaycastHit2D rcStructureR = Physics2D.Raycast(transform.position + new Vector3(1, 0.5f), Vector2.up, 0.5f, structure);
+
+        if (rcStructureL && !rcStructureR)
+        {
+            transform.position += new Vector3(0.5f, 0);
+            Debug.Log("move R");
+        }
+        if (rcStructureR && !rcStructureL)
+        {
+            transform.position -= new Vector3(0.5f, 0);
+            Debug.Log("move L");
+        }*/
 
         animator.SetBool("isRunning", isMoving);
         Flip();
@@ -72,13 +89,39 @@ public class Player : MonoBehaviour
         foreach (var result in results)
         {
             GridItem gridItem = result.gameObject.GetComponent<GridItem>();
-            if (gridItem != null)
-            {
-                selectedObject = gridItem.key;
-                Debug.Log("seleccionado: " + selectedObject);
-                break;
-            }
+
+            if(FindObject(gridItem)) break;
+            
         }
+    }
+    private bool FindObject(GridItem gridItem)
+    {
+        if (gridItem != null)
+        {   
+            ////////////////////
+            if (gridItem.key == lastSelectedObject)
+            {
+                Debug.Log("else");
+                selectedObject = -1;
+                lastSelectedObject = selectedObject;
+                gridItem.selectedImg.SetActive(false);
+            }
+            else
+            {
+                Debug.Log("if");
+                selectedObject = gridItem.key;
+                lastSelectedObject = selectedObject;
+                gridItem.selectedImg.SetActive(true);
+                foreach (var no in gridItem.noSelected)
+                {
+                    no.SetActive(false);
+                }
+            }
+
+             return true; /////////////////////
+        }
+        return false;
+
     }
 
     private void Flip()
